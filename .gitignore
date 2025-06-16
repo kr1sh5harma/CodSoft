@@ -1,0 +1,10 @@
+# Ignore node_modules in backend
+/backend/node_modules
+
+# Optional: Ignore .env if using
+/backend/.env
+
+# Optional: Ignore OS/Editor files
+.DS_Store
+*.log
+*.env
