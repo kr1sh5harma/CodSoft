@@ -1,8 +1,12 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config({});
 const app = express();
-const PORT = 3000;
+
+const PORT = process.env.PORT || 3000;
+
 
 //important middlewares for backend setup
 app.use(express.json());
