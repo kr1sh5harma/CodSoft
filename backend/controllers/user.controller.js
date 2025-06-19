@@ -47,7 +47,7 @@ export const login = async (req, res) => {
                 success: false
             })
         }
-        const user = await User.findOne({ email });
+        let user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
                 message: 'Incorrect credentials',
@@ -107,33 +107,31 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
+        console.log("Request ID:", req.id);
         const { fullName, email, phoneNumber, bio, skills } = req.body;
         const file = req.file;
-        if (!fullName || !email || !phoneNumber || !bio || !skills) {
-            return res.status(400).json({
-                message: "Please fill in all required fields.",
-                success: false
-            });
-        };
 
+        let skillsArray;
+        if(skills){
+            skillsArray = skills.split(',');
+        }
 
-
-        const skillsArray = skills.split(',');
         const userId = req.id;
         let user = await User.findById(userId);
 
         if (!user) {
+            console.log("User not found for ID:", userId); 
             return res.status(400).json({
                 message: 'User not found',
                 success: false
             })
         }
         //data update
-        user.fullName = fullName,
-            user.email = email,
-            user.phoneNumber = phoneNumber,
-            user.profile.bio = bio,
-            user.profile.skills = skillsArray
+        if(fullName) user.fullName = fullName
+        if(email) user.email = email
+        if(phoneNumber) user.phoneNumber = phoneNumber   
+        if(bio) user.profile.bio = bio
+        if(skills) user.profile.skills = skillsArray   
 
         await user.save();
 
