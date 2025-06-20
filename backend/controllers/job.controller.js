@@ -17,11 +17,12 @@ export const postJob = async(req,res) => {
         const job = await Job.create({
             title,
             description,
-            requirements: requirements.split(','),
-            salary,
+            requirements: requirements,
+            salary: Number(salary),
             location,
             jobType,
             experienceLevel: experience,
+            position,
             company: companyId,
             created_by: userId
 
@@ -49,7 +50,9 @@ export const getAllJobs = async(req,res) => {
                 {description:{$regex:keyword, $options:"i"}},
             ]
         };
-        const jobs = await Job.find(query);
+        const jobs = await Job.find(query).populate({
+            path: "company"
+        }).sort({createdAt: -1});
 
         if(!jobs){
             return res.status(404).json({
