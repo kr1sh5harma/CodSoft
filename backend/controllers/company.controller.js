@@ -4,7 +4,7 @@ export const registerCompany = async (req, res) => {
     try {
         const { companyName } = req.body;
         if (!companyName) {
-            return res.status($00).json({
+            return res.status(400).json({
                 message: 'company name is required',
                 success: false
             })
@@ -47,6 +47,10 @@ export const getCompany = async (req, res) => {
             })
         }
 
+        return res.status(200).json({
+            companies,
+            success: true
+        })
 
     }
 
@@ -102,7 +106,7 @@ export const updateCompany = async (req, res) => {
             success: true
         })
     }
-    
+
     catch (e) {
         console.log(e);
     }
